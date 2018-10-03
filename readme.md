@@ -160,7 +160,7 @@ Next, let's create a Mithril component. A component is simply an object that has
 By default, Mithril views are described using [hyperscript][6]. Hyperscript offers a terse syntax that can be indented more naturally than HTML for complex tags, and in addition, since its syntax is simply Javascript, it's possible to leverage a lot of Javascript tooling ecosystem: for example [Babel][7], [JSX][8] (inline-HTML syntax extension), [eslint][9] (linting), [uglifyjs][10] (minification), [istanbul][11] (code coverage), [flow][12] (static type analysis), etc.
 Mặc định thì views của Mithril đều được thể hiện bằng cách sử dụng [hyperscript][6]. Hyperscript cung cấp một cú pháp ngắn gọn mà có thể chèn vào các thẻ HTML phức tạp một cách dễ dàng hơn, và ngoài ra vì cú pháp của nó đơn giản chỉ là Javascript, nó có thể tận dụng các công cụ trong hệ sinh thái  của Javascript: ví dụ như [Babel][7], [JSX][8] (mở rộng cú pháp inline-HTML), [eslint][9] (gọn nhẹ), [uglifyjs][10] (rút gọn), [istanbul][11] (bảo mật code), [flow][12] (phân tích một cách cố định), etc.
 Let's use Mithril hyperscript to create a list of items. Hyperscript is the most idiomatic way of writing Mithril views, but [JSX is another popular alternative that you could explore][8] once you're more comfortable with the basics:
-    
+Giờ hãy sử dụng hyperscript của Mithril để tạo danh sách các item. Hyperscript là cách tốt nhất để biểu diễn việc tạo một views cho Mithril. nhưng [JSX là một lựa chọn phổ biến khác mà bạn có thể tìm hiểu][8] khi bạn đã cảm thấy thoải mái hơn với những thứ cơ bản:
     
 ```js
     // src/views/UserList.js

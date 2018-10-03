@@ -4,6 +4,6 @@ var User = require("../models/User")
 
 module.exports = {
     view: function() {
-        // TODO add code here
+        return m(".user-list")
     }
 }
