@@ -51,7 +51,7 @@ To install Mithril, follow the instructions in the [installation][3] page. Once 
 Để cài đặt Mithril, hãy làm theo phần giới thiệu trong trang [cài đặt][3]. khi bạn đã cài đặt xong Mithril vào một project cơ bản, chúng ta đã sẵn sàng để tạo một ứng dụng
 
 Let's start by creating a module to store our state. Let's create a file called `src/models/User.js`
-
+Hãy bắt đầu bằng việc tạo một module để lưu trữ các trạng thái của chúng ta. Tạo một file `src/models/User.js`
 
 ```js
     // src/models/User.js
@@ -63,7 +63,8 @@ Let's start by creating a module to store our state. Let's create a file called 
 ```  
 
 Now let's add code to load some data from a server. To communicate with a server, we can use Mithril's XHR utility, `m.request`. First, we include Mithril in the module:
-    
+Giờ thêm đoạn code để tải dữ liệu về thừ server. Để có thể giao tiếp với server, chúng ta có thể sử dụng tiện ích Mithril XHR, `m.request`. Đầu tiên, chúng ta thêm Mithril vào module:
+   
 ```js
 // src/models/User.js
 var m = require("mithril")
@@ -75,7 +76,7 @@ var User = {
 module.exports = User
 ```
 Next we create a function that will trigger an XHR call. Let's call it `loadList`
-    
+Tiếp theo chúng ta tạo một hàm     
 ```js
     // src/models/User.js
     var m = require("mithril")
