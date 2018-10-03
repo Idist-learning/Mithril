@@ -76,7 +76,8 @@ var User = {
 module.exports = User
 ```
 Next we create a function that will trigger an XHR call. Let's call it `loadList`
-Tiếp theo chúng ta tạo một hàm     
+Tiếp theo chúng ta tạo một hàm sẽ kích hoạt được lời gọi XHR. Tạm gọi nó là `loadList`
+
 ```js
     // src/models/User.js
     var m = require("mithril")
@@ -92,6 +93,8 @@ Tiếp theo chúng ta tạo một hàm
 ```  
 
 Then we can add an `m.request` call to make an XHR request. For this tutorial, we'll make XHR calls to the [REM][4] API, a mock REST API designed for rapid prototyping. This API returns a list of users from the `GET https://rem-rest-api.herokuapp.com/api/users` endpoint. Let's use `m.request` to make an XHR request and populate our data with the response of that endpoint.
+Giờ chúng ta có thể thêm lời gọi hàm `m.request` để tạo ra một XHR request. Đối với bài hướng dẫn này, chúng ta sẽ sử dụng XHR để gọi tới [REM][4] API, một REST API giả lập để tạo ra các mẫu thử nhanh. API này sẽ trả lại một danh sách các user từ endpoint `GET https://rem-rest-api.herokuapp.com/api/users`. Hãy sử dụng `m.request` để tạo ra một XHR request và trả về dữ liệu cho chúng ta với endpoint đó. 
+
     
 ```js
     // src/models/User.js
@@ -115,19 +118,21 @@ Then we can add an `m.request` call to make an XHR request. For this tutorial, w
 ```    
 
 The `method` option is an [HTTP method][5]. To retrieve data from the server without causing side-effects on the server, we need to use the `GET` method. The `url` is the address for the API endpoint. The `withCredentials: true` line indicates that we're using cookies (which is a requirement for the REM API).
+Tùy chọn `method` là một [HTTP method][5]. Để truy xuất được dữ liệu từ server mà không gây ra các ảnh hưởng ngoại lệ trên server, chúng ta cần sử dụng phương thức `get`. `url` là địa của của API endpoint. Dòng `withCredentials: true` cho ta biết chúng ta đang sử dụng cookie (nó được yêu cầu cho REM API)
 
 The `m.request` call returns a Promise that resolves to the data from the endpoint. By default, Mithril assumes a HTTP response body are in JSON format and automatically parses it into a Javascript object or array. The `.then` callback runs when the XHR request completes. In this case, the callback assigns the `result.data` array to `User.list`.
+Lời gọi `m.request` trả về một Promise khi xử lý dữ liệu từ endpoint. Mặc định là Mithril giả định là phần nội dung của HTTP response có dạng Json và được tự động phân tích thành một Javascript object hoặc array. Hàm callback `.then` chạy khi XHR request hoàn tất. Trong trường hợp này, hàm callback chỉ định mảng `result.data` vào `User.list`.
 
 Notice we also have a `return` statement in `loadList`. This is a general good practice when working with Promises, which allows us to register more callbacks to run after the completion of the XHR request.
-
+Chú ý là chúng ta cũng có một mệnh đề `return` trong hàm `loadList`. Đây là bài thực hành  nhìn chung khá tốt khi làm việc với Promises,  cho phép chúng ra đăng ký nhiều lời gọi để chạy sau khi một XHR request hoàn tất.
 This simple model exposes two members: `User.list` (an array of user objects), and `User.loadList` (a method that populates `User.list` with server data).
-
+Model đơn giản này cho thấy 2 thành phần: `User.list` (là một mảng các đối tượng user), và `User.loadList` (một phương thức để nhận dữ liệu từ server vào `User.list`)
 * * *
 
 Now, let's create a view module so that we can display data from our User model module.
-
+Bây giờ hãy tạo một view module để chúng ta có thể hiển thị dữ liệu từ module User model của chúng ta.
 Create a file called `src/views/UserList.js`. First, let's include Mithril and our model, since we'll need to use both:
-    
+Tạo một file tạm gọi là: `src/views/UserList.js`. Đầu tiên, hãy include Mithril và model của chúng ta, vì chúng ta sẽ cần cả 2 thứ:
     
 ```js
     // src/views/UserList.js
@@ -137,7 +142,7 @@ Create a file called `src/views/UserList.js`. First, let's include Mithril and o
     
 
 Next, let's create a Mithril component. A component is simply an object that has a `view` method:
-    
+ Tiếp theo chúng ta tạo một component Mithril. Component này chỉ đơn giản là một đối tượng có một method `view`:   
     
 ```js
     // src/views/UserList.js
@@ -153,7 +158,7 @@ Next, let's create a Mithril component. A component is simply an object that has
     
 
 By default, Mithril views are described using [hyperscript][6]. Hyperscript offers a terse syntax that can be indented more naturally than HTML for complex tags, and in addition, since its syntax is simply Javascript, it's possible to leverage a lot of Javascript tooling ecosystem: for example [Babel][7], [JSX][8] (inline-HTML syntax extension), [eslint][9] (linting), [uglifyjs][10] (minification), [istanbul][11] (code coverage), [flow][12] (static type analysis), etc.
-
+Mặc định thì views của Mithril đều được thể hiện bằng cách sử dụng [hyperscript][6]. Hyperscript cung cấp một cú pháp ngắn gọn mà có thể chèn vào các thẻ HTML phức tạp một cách dễ dàng hơn, và ngoài ra vì cú pháp của nó đơn giản chỉ là Javascript, nó có thể tận dụng các công cụ trong hệ sinh thái  của Javascript: ví dụ như [Babel][7], [JSX][8] (mở rộng cú pháp inline-HTML), [eslint][9] (gọn nhẹ), [uglifyjs][10] (rút gọn), [istanbul][11] (bảo mật code), [flow][12] (phân tích một cách cố định), etc.
 Let's use Mithril hyperscript to create a list of items. Hyperscript is the most idiomatic way of writing Mithril views, but [JSX is another popular alternative that you could explore][8] once you're more comfortable with the basics:
     
     
