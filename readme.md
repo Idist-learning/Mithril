@@ -177,9 +177,10 @@ Giờ hãy sử dụng hyperscript của Mithril để tạo danh sách các ite
 
 The `".user-list"` string is a CSS selector, and as you would expect, `.user-list` represents a class. When a tag is not specified, `div` is the default. So this view is equivalent to `
 `.
+Chuỗi `".user-list"` trong một selector CSS, và như bạn mong đợi, `.user-list` đại diện cho một class. Khi một tag không được chỉ định rõ ranhg, `div` được dùng một cách mặc định. Do đó chế độ xem này được coi như là ``.
 
 Now, let's reference the list of users from the model we created earlier (`User.list`) to dynamically loop through data:
-    
+Bây giờ,  hãy tham khảo danh sách các user từ model mà chúng ta đã tạo trước đó (`User.list`) để tự động lặp lại các dữ liệu:
     
 ```js
     // src/views/UserList.js
@@ -197,7 +198,7 @@ Now, let's reference the list of users from the model we created earlier (`User.
     
 
 Since `User.list` is a Javascript array, and since hyperscript views are just Javascript, we can loop through the array using the `.map` method. This creates an array of vnodes that represents a list of `div`s, each containing the name of a user.
-
+Vì `User.list` là một mảng trong Javascript, và bởi vì chế độ view của hyperscript cũng chỉ là Javascript, chúng ta hoàn toàn có thể lặp qua một array bằng cách sử dụng phương thức `.map`.Nó tạo ra một mảng của các vnode được đại diện thông qua các thẻ `div`, mỗi thẻ lại chứa tên của một user.
 The problem, of course, is that we never called the `User.loadList` function. Therefore, `User.list` is still an empty array, and thus this view would render a blank page. Since we want `User.loadList` to be called when we render this component, we can take advantage of component [lifecycle methods][13]:
     
     
@@ -218,12 +219,16 @@ The problem, of course, is that we never called the `User.loadList` function. Th
     
 
 Notice that we added an `oninit` method to the component, which references `User.loadList`. This means that when the component initializes, User.loadList will be called, triggering an XHR request. When the server returns a response, `User.list` gets populated.
+Chú ý là chúng ta đã thêm một phương thức `oninit` vào component, được tham chiếu tới `User.loadList`. Điều này có nghĩa là khi component được khởi tạo, User.loadLisst sẽ được gọi, kích hoạt một XHR request. Khi phía server trả về kết quả, `User.list` sẽ nhận được các giá trị của nó.
 
 Also notice we **didn't** do `oninit: User.loadList()` (with parentheses at the end). The difference is that `oninit: User.loadList()` calls the function once and immediately, but `oninit: User.loadList` only calls that function when the component renders. This is an important difference and a common pitfall for developers new to javascript: calling the function immediately means that the XHR request will fire as soon as the source code is evaluated, even if the component never renders. Also, if the component is ever recreated (through navigating back and forth through the application), the function won't be called again as expected.
+Cũng phải chú ý là chúng ta **không được** thực hiện việc `oninit: User.loadList()` (với các dấu ngoặc đơn ở cuối).  Điểm khác biệt ở đây là `oninit: User.loadList()` sẽ chỉ gọi hàm chỉ một lần và ngay lập tức, nhưng `oninit: User.loadList` chỉ gọi hàm khi component đó được render. Đây là điểm khác biệt khá quan trọng và cũng là lỗi chung cho các developer mới khi làm việc với Javascript: gọi hàm ngay lập tức có nghĩa là XHR request sẽ kích hoạt ngay sau khi source code tỉa hoàn tất, mặc dù component không bao giờ được render. Tương tự thế, nếu component được tái tạo lại, (thông qua việc điều hướng qua lại giữa các ứng dụng), các chức năng sẽ không được gọi lại như mong đợi.
+
+
 * * *
 
 Let's render the view from the entry point file `src/index.js` we created earlier:
-    
+Giờ hãy render view từ điểm truy cập file `src/index.js` chúng ta đã tạo trước đó:
     
 ```js
     // src/index.js
@@ -236,17 +241,23 @@ Let's render the view from the entry point file `src/index.js` we created earlie
     
 
 The `m.mount` call renders the specified component (`UserList`) into a DOM element (`document.body`), erasing any DOM that was there previously. Opening the HTML file in a browser should now display a list of person names.
+Lời gọi `m.mount` render component được chỉ định (`UserList`) vào một DOM element (`document.body`), nó xoá mọi DOM trước đó. Khi đó mở một file HTML trên browser sẽ hiển thị một danh sách tên người dùng.
 
 * * *
 
 Right now, the list looks rather plain because we have not defined any styles.
+Ngay bây giờ, danh sách trông khá là đơn giản vì chúng ta chưa định nghĩa bất kỳ style nào.
 
 There are many similar conventions and libraries that help organize application styles nowadays. Some, like [Bootstrap][14] dictate a specific set of HTML structures and semantically meaningful class names, which has the upside of providing low cognitive dissonance, but the downside of making customization more difficult. Others, like [Tachyons][15] provide a large number of self-describing, atomic class names at the cost of making the class names themselves non-semantic. "CSS-in-JS" is another type of CSS system that is growing in popularity, which basically consists of scoping CSS via transpilation tooling. CSS-in-JS libraries achieve maintainability by reducing the size of the problem space, but come at the cost of having high complexity.
+Ngày nay có rất nhiều tiêu chuẩn và thư viện hỗ trợ việc tổ chức một khung style cho ứng dụng. Một vài thứ như [Bootstrap][14] tuỳ chỉnh cho một tập hợp các cấu trúc HTML cụ thể và các tên class có ý nghĩa, trong đó nó cung cấp khả năng tích hợp các hệ thống với mức xung đột thấp, nhưng nhược điểm của có là tuỳ biến tương đối khó. Công cụ khác như [tachyons][15] cung cấp một số lượng lớn các class nguyên tố bằng việc tự mô tả với việc đặt tên class không cần phải tuân theo ngữ nghĩa. "CSS-in-JS" là một kiểu khác của hệ thống CSS đang ngày càng phổ biến, về cơ bản là mở rộng phạm vi của CSS thông qua các công cụ. Các thư việc CSS-in-JS có khả năng bảo trì cao vì được tối giản các vấn đề về kích thước, nhưng lại có độ phức tạp cao.
+
 
 Regardless of what CSS convention/library you choose, a good rule of thumb is to avoid the cascading aspect of CSS. To keep this tutorial simple, we'll just use plain CSS with overly explicit class names, so that the styles themselves provide the atomicity of Tachyons, and class name collisions are made unlikely through the verbosity of the class names. Plain CSS can be sufficient for low-complexity projects (e.g. 3 to 6 man-months of initial implementation time and few project phases).
+Bất kể là tiêu chuẩn hay thư viện CSS nào mà bạn chọn, có một nguyên tắc chung là tránh việc xếp tầng của CSS. Áp dụng với tutorial đơn giản này, chúng ta sẽ chỉ sử dụng CSS thuần với các tên lớp một cách rõ ràng, vì vậy để chúng tự cung cấp một cấu trúc nguyên tử như của Tachyons, và tên class ảnh hưởng tới nhau thông qua độ dài của tên các class đó. Các CSS cùng cấp độ có thể đủ áp dụng cho một project có độ phức tạp thấp. ( ví dụ như từ 3- 6 người trong một tháng và một vài giai đoạn của dự án)
 
 To add styles, let's first create a file called `styles.css` and include it in the `index.html` file:
-    
+Để thêm style, trước tiên hãy tạo một file `styles.css` và include nó vào file `index.html`:
+
 ```html
 <!doctype html>
 <html>
@@ -263,7 +274,7 @@ To add styles, let's first create a file called `styles.css` and include it in t
 ```  
 
 Now we can style the `UserList` component:
-    
+Giờ chúng ta có thể style lại `UserList` component:
     
 ```css
 .user-list {list-style:none;margin:0 0 10px;padding:0;}
@@ -273,19 +284,23 @@ Now we can style the `UserList` component:
     
 
 The CSS above is written using a convention of keeping all styles for a rule in a single line, in alphabetical order. This convention is designed to take maximum advantage of screen real estate, and makes it easier to scan the CSS selectors (since they are always on the left side) and their logical grouping, and it enforces predictable and uniform placement of CSS rules for each selector.
+phần CSS ở trên được viết theo quy tắc giữ tất cả các style trên một dòng, sắp xếp theo bảng chữ cái. Tiêu chuẩn này được thiết kế để tận dụng được tối đa phần màn hình cố định, và làm chúng đọc các selectors CSS dễ dàng hơn (vì chúng luôn nằm ở bên trái) và thuộc vào các nhóm logic của chúng, và chúng thực hiện các quy tắc có thể dự đoán và thống nhất cho từng bộ lọc.
 
 Obviously you can use whatever spacing/indentation convention you prefer. The example above is just an illustration of a not-so-widespread convention that has strong rationales behind it, but deviate from the more widespread cosmetic-oriented spacing conventions.
+Rõ ràng là bạn có thể sử dụng bất kỳ tiêu chuẩn về khoảng trống/ cách thụt lề mà bạn thích. Ví dụ trên chỉ là minh hoạ cho một quy ước không được sử dụng rộng rãi vì có những lý do lớn ở đằng sau nó, nhưng nó lại vượt qua được các quy ước về khoảng cách lớn về mặt mỹ thuật.
 
 Reloading the browser window now should display some styled elements.
-
+Giờ hãy load lại trình duyệt để hiển thị lại style cho các element. 
 * * *
 
 Let's add routing to our application.
+Giờ hãy thêm phần định tuyến vào ứng dụng.
 
 Routing means binding a screen to a unique URL, to create the ability to go from one "page" to another. Mithril is designed for Single Page Applications, so these "pages" aren't necessarily different HTML files in the traditional sense of the word. Instead, routing in Single Page Applications retains the same HTML file throughout its lifetime, but changes the state of the application via Javascript. Client side routing has the benefit of avoiding flashes of blank screen between page transitions, and can reduce the amount of data being sent down from the server when used in conjunction with an web service oriented architecture (i.e. an application that downloads data as JSON instead of downloading pre-rendered chunks of verbose HTML).
+Định tuyến có nghĩa gắn một khung màn hình vào một URL duy nhất, để tạo khả năng chuyển từ trang này sang trang khác. Mithril được thiết kế cho Single Page Applications, vì vậy "các trang" không cần thiết phải khác nhau về file HTML như cách truyền thống. thay vào đó, việc định tuyến trong Single Page Application chỉ giữ một file html duy nhất trong suốt vòng đời của nó, nhưng lại thay đổi các trạng thái của ứng dụng thông qua Javascript. Định tuyến phía client mang lại lợi ích  là việc tránh các lần nhấp nháy khi chuyển màn hình và có thể giảm được dữ liệu được gửi xuống từ server khi được dùng kết hợp với các web có kiến trúc định hướng dịch vụ (ví dụ một ứng dụng tải dữ liệu dạng Json thay cho việc tải các đoạn HTML được render trước đó).
 
 We can add routing by changing the `m.mount` call to a `m.route` call:
-    
+Chúng ta có thể thêm phần định tuyến bằng việc thay đổi hàm gọi `m.mount` thành `m.route`:
     
 ```js
     // src/index.js
@@ -298,12 +313,14 @@ We can add routing by changing the `m.mount` call to a `m.route` call:
     })
 ```
     
-
 The `m.route` call specifies that the application will be rendered into `document.body`. The `"/list"` argument is the default route. That means the user will be redirected to that route if they land in a route that does not exist. The `{"/list": UserList}` object declares a map of existing routes, and what components each route resolves to.
+Lời gọi `m.route` chỉ định ứng dụng sẽ render vào `document.body`. Đối số `/list` là định tuyến mặc định. Nó có nghĩa là người dùng sẽ được redirect tới route này nếu họ truy cập vào một route không tồn tại. Object `{"/list": UserList}` khai báo một bản đồ các route tồn tại và các component mà mỗi route sẽ giải quyết.
 
 Refreshing the page in the browser should now append `#!/list` to the URL to indicate that routing is working. Since that route render UserList, we should still see the list of people on screen as before.
+Khi refresh lại trang trên trình duyệt sẽ được appent thêm `#!/list` vào URL để chỉ ra là route đang hoạt động. Vì route này render UserList, chúng ta vẫn xem được danh sách user trên màn hình như trước.
 
 The `#!` snippet is known as a hashbang, and it's a commonly used string for implementing client-side routing. It's possible to configure this string it via [`m.route.prefix`][16]. Some configurations require supporting server-side changes, so we'll just continue using the hashbang for the rest of this tutorial.
+Đoạn `#!`
 
 * * *
 
