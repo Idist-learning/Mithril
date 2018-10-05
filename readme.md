@@ -320,12 +320,12 @@ Refreshing the page in the browser should now append `#!/list` to the URL to ind
 Khi refresh lại trang trên trình duyệt sẽ được appent thêm `#!/list` vào URL để chỉ ra là route đang hoạt động. Vì route này render UserList, chúng ta vẫn xem được danh sách user trên màn hình như trước.
 
 The `#!` snippet is known as a hashbang, and it's a commonly used string for implementing client-side routing. It's possible to configure this string it via [`m.route.prefix`][16]. Some configurations require supporting server-side changes, so we'll just continue using the hashbang for the rest of this tutorial.
-Đoạn `#!`
+Đoạn `#!` được gọi là đoạn băm, và nó là chuỗi thường được sử dụng để triển khai việc định tuyến phía client. Có thể cấu hình lại nó thông qua [`m.route.prefix`][16]. Có vài phần config yêu cầu hỗ trợ từ các thay đổi phía server, vì vậy chúng ta sẽ tiếp thục sủ dụng mã băm này cho phần còn lại của bài tutorial.
 
 * * *
 
 Let's add another route to our application for editing users. First let's create a module called `views/UserForm.js`
-    
+Hãy thêm một route khác vào ứng dụng của chúng ta để thay đổi các user. Ddayau tiên hãy tạo một module là `views/UserForm.js`
     
 ```js
     // src/views/UserForm.js
@@ -339,7 +339,7 @@ Let's add another route to our application for editing users. First let's create
     
 
 Then we can `require` this new module from `src/index.js`
-    
+ Sau đó chúng ta có thể `require` module mới này vào `src/index.js`.
     
 ```js
     // src/index.js
@@ -355,7 +355,7 @@ Then we can `require` this new module from `src/index.js`
     
 
 And finally, we can create a route that references it:
-    
+Và cuối cùng, chúng ta tạo một route trỏ tới nó:
     
 ```js
     // src/index.js
@@ -372,10 +372,11 @@ And finally, we can create a route that references it:
     
 
 Notice that the new route has a `:id` in it. This is a route parameter; you can think of it as a wild card; the route `/edit/1` would resolve to `UserForm` with an `id` of `"1"`. `/edit/2` would also resolve to `UserForm`, but with an `id` of `"2"`. And so on.
-
+Chú ý route mới có một tham số `:id` trong nó. Đây là một tham số của route; bạn có thể nghĩ về nó như một thẻ không cố định; route `/edit/1` được phân giải về `UserForm` với `id` là `1`. `/edit/2` cũng được phân giải về `UserForm`, nhưng với `id` là `2`. Tương tự như thế.
 Let's implement the `UserForm` component so that it can respond to those route parameters:
+    Hãy triển khai component `UserForm`  để nó có thể đáp ứng các tham số của route:
     
-    
+```js
     // src/views/UserForm.js
     var m = require("mithril")
     
@@ -390,11 +391,13 @@ Let's implement the `UserForm` component so that it can respond to those route p
             ])
         }
     }
+```
     
 
 And let's add some styles to `styles.css`:
+ Giờ thêm một vài style vào `styles.css`:   
     
-    
+```css
     /* styles.css */
     body,.input,.button {font:normal 16px Verdana;margin:0;}
     
@@ -406,12 +409,14 @@ And let's add some styles to `styles.css`:
     .input {border:1px solid #ddd;border-radius:3px;box-sizing:border-box;display:block;margin:0 0 10px;padding:10px 15px;width:100%;}
     .button {background:#eee;border:1px solid #ddd;border-radius:3px;color:#333;display:inline-block;margin:0 0 10px;padding:10px 15px;text-decoration:none;}
     .button:hover {background:#e8e8e8;}
+```
     
 
 Right now, this component does nothing to respond to user events. Let's add some code to our `User` model in `src/models/User.js`. This is how the code is right now:
+Bây giờ, component này chưa có gì để trả lời các sự kiện từ user. Hãy thêm một đoạn code vào model `User` của chúng ta trong file `src/models/User.js`. Đây là code chuẩn:
     
-    
-    // src/models/User.js
+   ```js
+ // src/models/User.js
     var m = require("mithril")
     
     var User = {
@@ -429,47 +434,51 @@ Right now, this component does nothing to respond to user events. Let's add some
     }
     
     module.exports = User
+```
     
 
 Let's add code to allow us to load a single user
+Hãy thêm code để cho phép ta tải được một user:    
     
-    
+```js
     // src/models/User.js
-    var m = require("mithril")
-    
-    var User = {
-        list: [],
-        loadList: function() {
-            return m.request({
-                method: "GET",
-                url: "https://rem-rest-api.herokuapp.com/api/users",
-                withCredentials: true,
-            })
-            .then(function(result) {
-                User.list = result.data
-            })
-        },
-    
-        current: {},
-        load: function(id) {
-            return m.request({
-                method: "GET",
-                url: "https://rem-rest-api.herokuapp.com/api/users/" + id,
-                withCredentials: true,
-            })
-            .then(function(result) {
-                User.current = result
-            })
+        var m = require("mithril")
+        
+        var User = {
+            list: [],
+            loadList: function() {
+                return m.request({
+                    method: "GET",
+                    url: "https://rem-rest-api.herokuapp.com/api/users",
+                    withCredentials: true,
+                })
+                .then(function(result) {
+                    User.list = result.data
+                })
+            },
+        
+            current: {},
+            load: function(id) {
+                return m.request({
+                    method: "GET",
+                    url: "https://rem-rest-api.herokuapp.com/api/users/" + id,
+                    withCredentials: true,
+                })
+                .then(function(result) {
+                    User.current = result
+                })
+            }
         }
-    }
-    
-    module.exports = User
+        
+        module.exports = User
+```
     
 
 Notice we added a `User.current` property, and a `User.load(id)` method which populates that property. We can now populate the `UserForm` view using this new method:
+ Chú ý là chúng ta thêm thuộc tính `User.current`, và phương thức `User.load(id)` sẽ trả dữ liệu vào đó. Giờ chúng ta có thể điền vào view `UserForm` bằng việc sử dụng phương thức mới:
     
-    
-    // src/views/UserForm.js
+```js
+// src/views/UserForm.js
     var m = require("mithril")
     var User = require("../models/User")
     
@@ -485,13 +494,16 @@ Notice we added a `User.current` property, and a `User.load(id)` method which po
             ])
         }
     }
+```
     
 
 Similar to the `UserList` component, `oninit` calls `User.load()`. Remember we had a route parameter called `:id` on the `"/edit/:id": UserForm` route? The route parameter becomes an attribute of the `UserForm` component's vnode, so routing to `/edit/1` would make `vnode.attrs.id` have a value of `"1"`.
-
+Tương tự như các component `UserList`, `oninit` gọi tới `User.load()`. Hãy nhớ là chúng ta có một biến trên route được gọi `:id` trong route`"/edit/:id": UserForm`? Tham số trên route trở thành một thuộc tính vnode của component `UserList`,  vì thế việc điều hướng tới `/edit/1` sẽ tạo `vnode.attrs.id` có giá trị là `"1"`
 Now, let's modify the `UserList` view so that we can navigate from there to a `UserForm`:
+Bây giờ, hãy sửa view `UserList` để chúng ta có thể điều hướng tới `UserForm`:
     
     
+```js
     // src/views/UserList.js
     var m = require("mithril")
     var User = require("../models/User")
@@ -504,18 +516,21 @@ Now, let's modify the `UserList` view so that we can navigate from there to a `U
             }))
         }
     }
+```
     
 
 Here we changed `.user-list-item` to `a.user-list-item`. We added an `href` that references the route we want, and finally we added `oncreate: m.route.link`. This makes the link behave like a routed link (as opposed to merely behaving like a regular link). What this means is that clicking the link would change the part of URL that comes after the hashbang `#!` (thus changing the route without unloading the current HTML page)
-
+Ở đây chúng ta đổi `.user-list-item` thành `a.user-list-item`. Chúng ta thêm một `href` để tham chiếu tới route mà chúng ta muốn, và cuối cùng chúng ta thêm `oncreate: m.route.link`. Nó tạo ra link nhưng một link route (trái ngược như việc chỉ đối xử như một link bình thường). Điều này có nghĩa là khi click vào liên kết sẽ thay đổi một phần của URL ở phần băm phía sau `#!` (do đó nó có thể thay đổi route mà không cần load lại trang HTML hiện tại)
 If you refresh the page in the browser, you should now be able to click on a person and be taken to a form. You should also be able to press the back button in the browser to go back from the form to the list of people.
+Nếu bạn làm mới trang trên trình duyệt, bạn đã có thể click vào một người và nhận được một form. Bạn cũng có thể nhấn vào nút back trên trình duyệt để quay lại từ form về danh sách các người dùng.
 
 * * *
 
 The form itself still doesn't save when you press "Save". Let's make this form work:
+ Form này hiện chưa thể save khi bạn nhấn nút "Save". Hãy làm cho form này hoạt động:   
     
-    
-    // src/views/UserForm.js
+```js
+// src/views/UserForm.js
     var m = require("mithril")
     var User = require("../models/User")
     
@@ -542,13 +557,16 @@ The form itself still doesn't save when you press "Save". Let's make this form w
             ])
         }
     }
+```
     
 
 We added `oninput` events to both inputs, that set the `User.current.firstName` and `User.current.lastName` properties when a user types.
+Chúng ta đã thêm các sự kiện `oninput` vào cả 2 input, nó đặt vào các thuộc tính `User.current.firstName` và `User.current.lastName` khi người dùng nhập vào.
 
 In addition, we declared that a `User.save` method should be called when the "Save" button is pressed. Let's implement that method:
+    Ngoài ra, chúng ta khai báo một phương thức `User.save` có thể được gọi khi nút "Save" được nhấn. Hãy thực hiện phương thức này:
     
-    
+```js
     // src/models/User.js
     var m = require("mithril")
     
@@ -590,17 +608,21 @@ In addition, we declared that a `User.save` method should be called when the "Sa
     module.exports = User
     
 
+```
+
 In the `save` method at the bottom, we used the `PUT` HTTP method to indicate that we are upserting data to the server.
-
+Ở dưới cùng của phương thức `save`, chúng ta sử dụng phương thức `PUT` của HTTP để chỉ ra rằng chúng ta đang ghi lại dữ liệu lên server.
 Now try editing the name of a user in the application. Once you save a change, you should be able to see the change reflected in the list of users.
-
+giờ hãy thử edit tên của một user trong ứng dụng. Khi bạn lưu một thay đổi, bạn có thể thấy được sự thay đổi được phản hồi ngay trên danh sách user.
 * * *
 
 Currently, we're only able to navigate back to the user list via the browser back button. Ideally, we would like to have a menu - or more generically, a layout where we can put global UI elements
-
+Bây giờ chúng ta chỉ có thể điều hướng quay trở lại danh sách user thông qua nút back của trình duyệt. Ý tưởng ở đây là chúng ta càn có một menu - hoặc cái gì đó tương tự, một layout 
+mà chúng ta có thể đặt các phần thử cho giao diện người dùng toàn cục.
 Let's create a file `src/views/Layout.js`:
+Hãy tạo một file `src/views/Layout.js`:    
     
-    
+```js
     // src/views/Layout.js
     var m = require("mithril")
     
@@ -614,18 +636,20 @@ Let's create a file `src/views/Layout.js`:
             ])
         }
     }
+```
     
 
-This component is fairly straightforward, it has a `
-` with a link to the list of users. Similar to what we did to the `/edit` links, this link uses `m.route.link` to activate routing behavior in the link.
+This component is fairly straightforward, it has a `<nav>` with a link to the list of users. Similar to what we did to the `/edit` links, this link uses `m.route.link` to activate routing behavior in the link.
+Component này khá đơn giản, nó có một thẻ `<nav>` với một link tới danh sách các user. Tương tự như những gì chúng ta thực hiện với các link `/edit`, link này sử dụng `m.route.link` để kích hoạt các hoạt động định tuyến trên link.
 
-Notice there's also a `
-` element with `vnode.children` as children. `vnode` is a reference to the vnode that represents an instance of the Layout component (i.e. the vnode returned by a `m(Layout)` call). Therefore, `vnode.children` refer to any children of that vnode.
+Notice there's also a `<section>` element with `vnode.children` as children. `vnode` is a reference to the vnode that represents an instance of the Layout component (i.e. the vnode returned by a `m(Layout)` call). Therefore, `vnode.children` refer to any children of that vnode.
+Chú ý là cũng có thành phần `<section>` với các `vnode.children` như các thành phần con. `vnode` là một tham chiếu tới vnode đại diện cho một thể hiện của component Layout ( ví dụ như vnode trả về qua lời gọi `m(Layout)`). Do đó, `vnode.children` ánh xạ tới bất kì thành phần con là của vnode.
 
 Let's add some styles:
+Hãy thêm một số style:    
     
-    
-    /* styles.css */
+```css
+ /* styles.css */
     body,.input,.button {font:normal 16px Verdana;margin:0;}
     
     .layout {margin:10px auto;max-width:1000px;}
@@ -639,11 +663,12 @@ Let's add some styles:
     .input {border:1px solid #ddd;border-radius:3px;box-sizing:border-box;display:block;margin:0 0 10px;padding:10px 15px;width:100%;}
     .button {background:#eee;border:1px solid #ddd;border-radius:3px;color:#333;display:inline-block;margin:0 0 10px;padding:10px 15px;text-decoration:none;}
     .button:hover {background:#e8e8e8;}
-    
+```    
 
 Let's change the router in `src/index.js` to add our layout into the mix:
+Hãy thay đổi định tuyến trong `src/index.js` để thêm Layout của chúng ta vào mix:    
     
-    
+```js
     // src/index.js
     var m = require("mithril")
     
@@ -663,24 +688,28 @@ Let's change the router in `src/index.js` to add our layout into the mix:
             }
         },
     })
+```
     
 
 We replaced each component with a [RouteResolver][17] (basically, an object with a `render` method). The `render` methods can be written in the same way as regular component views would be, by nesting `m()` calls.
+Chúng tôi đã thay thế các component bằng một [RouteResolver][17] (về cơ bản, mỗi đối tượng ứng với một phương thức `render` ). Phương thức `render` có thể được viết lại bằng cùng một cách mà các view component thông thường hay thực hiện, thông qua lời gọi `m()`.
 
 The interesting thing to pay attention to is how components can be used instead of a selector string in a `m()` call. Here, in the `/list` route, we have `m(Layout, m(UserList))`. This means there's a root vnode that represents an instance of `Layout`, which has a `UserList` vnode as its only child.
+Có vài điều thú vị cần chú ý là làm cách nào các component có thể sử dụng thay cho một chuỗi selector trong một lời gọi `m()`. Ở đây, trong route `list`, chúng ta có `m(Layout, m(UserList))` Điều này có nghĩa là có một vnode gốc được đại diện cho `Layout`, nó có một vnode `UserList` được xem như là con của nó.
 
 In the `/edit/:id` route, there's also a `vnode` argument that carries the route parameters into the `UserForm` component. So if the URL is `/edit/1`, then `vnode.attrs` in this case is `{id: 1}`, and this `m(UserForm, vnode.attrs)` is equivalent to `m(UserForm, {id: 1})`. The equivalent JSX code would be ``.
-
+Trong route `/edit/:id`, cũng có một đối số `vnode` mang tham số của route vào component `UserForm`. vì vậy nếu URL là `/edit/1`, sau đó `vnode.attrs` trong trường hợp này là `{id: 1}`, và `m(UserForm, vnode.attrs)` tương đương với `m(UserForm, {id: 1})`. Mã JSX tương tự sẽ là `<UserForm id={vnode.attrs.id} />`.
 Refresh the page in the browser and now you'll see the global navigation on every page in the app.
-
+Refresh lại troang trên trình duyệt và bây giờ bạn có thể điều hướng một cách toàn cục trên mọi trang của ứng dụng.
 * * *
 
 This concludes the tutorial.
+Tóm lại tutorial này,
 
 In this tutorial, we went through the process of creating a very simple application where we can list users from a server and edit them individually. As an extra exercise, try to implement user creation and deletion on your own.
-
+Trong tutorial này, chúng ta đã đi qua một quá trình tạo ra một ứng dụng cực kì đơn giản, nơi mà chúng ta có thể hiển thị danh sách user từ server và sửa chúng một cách riêng rẽ. Tương tự với một bài tập bổ sung, hãy cố gắng tạo thêm và xoá chúng khỏi ứng dụng của bạn.
 If you want to see more examples of Mithril code, check the [examples][18] page. If you have questions, feel free to drop by the [Mithril chat room][19].
-
+Nếu bạn muốn xem thêm các ví dụ khác của Mithril, xem qua trang [các ví dụ][18]. Nếu bạn có câu hỏi, hãy ghé qua [Mithril chat room][19].
 * * *
 
 License: MIT. © Leo Horie.
