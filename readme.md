@@ -1,5 +1,8 @@
 
 [Source](https://mithril.js.org/simple-application.html "Permalink to Simple application - Mithril.js")
+* * *
+Bài demo trước khi đọc bài viết để biết ta làm gì trong cuộc sống này :)))
+[demo](https://idist-vnp.github.io/Mithril/exercises/#!/list)
 
 # ứng dụng đơn giản - Mithril.js
 
