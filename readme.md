@@ -10,7 +10,7 @@ Hãy thử phát triển một ứng dụng đơn giản mà bao gồm cả mộ
 
 Một ví dụ về việc thực hiện các tương tác có thể tham khảo ở đây [flems: Simple Application][1]
 
-Đầu tiên hãy tạo một điểm truy cập cho ứng dụng. Tạo một file `index.html`:    
+Đầu tiên hãy tạo một điểm truy cập cho ứng dụng. Tạo một file `index.html`:
     
 ```html
 <!doctype html>

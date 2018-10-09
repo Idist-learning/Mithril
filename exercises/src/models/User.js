@@ -27,12 +27,15 @@ var User = {
     },
 
     save: function() {
-        return m.request({
+          return m.request({
             method: "PUT",
             url: "https://rem-rest-api.herokuapp.com/api/users/" + User.current.id,
             data: User.current,
             withCredentials: true,
+        }).then(function () {
+            window.location.replace("#!/list")
         })
+
     }
 }
 
