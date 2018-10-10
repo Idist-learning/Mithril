@@ -280,7 +280,7 @@ Khi refresh lại trang trên trình duyệt sẽ được appent thêm `#!/list
 
 * * *
 
-Hãy thêm một route khác vào ứng dụng của chúng ta để thay đổi các user. Ddayau tiên hãy tạo một module là `views/UserForm.js`
+Hãy thêm một route khác vào ứng dụng của chúng ta để thay đổi các user. Đầu tiên hãy tạo một module là `views/UserForm.js`
     
 ```js
     // src/views/UserForm.js
